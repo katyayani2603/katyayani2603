@@ -1,0 +1,602 @@
+inp_string = """I want to enquire about a medicine please.
+Pharmacy name is James Pharmacy and acct no is 6513.
+I want to enquire about a medicine.
+I’m worried—can you please tell me what side effects of Aspirin might have.
+Thanks
+"""
+
+inp_string = """I need some information on a medicine.
+Pharmacy name is James Pharmacy and acct no is 6513.
+I need some information on a medicine.
+I’m concerned about taking Ibuprofen and want to know what side effects to watch for..
+Thanks for the info!
+"""
+
+inp_string = """Can you help me with a medicine query please?.
+Pharmacy name is James Pharmacy and acct no is 6513.
+I want to know details about a medicine.
+Before I take Paracetamol, I’d like to know what side effects it may cause.
+Thanks, that helps.
+"""
+
+inp_string = """Could you provide some info on a medicine?
+Pharmacy name is James Pharmacy and acct no is 6513.
+I need some information on a medicine.
+I’m a bit nervous about this medication. Could you explain the side effects of Lisinopril.
+Thanks for the advice.
+"""
+
+inp_string = """I’m interested in learning more about a medicine.
+Pharmacy name is James Pharmacy and acct no is 6513.
+I’m interested in learning more about a medicine.
+I’m feeling anxious and would like to understand the possible side effects of Amlodipine.
+Thanks for the info!
+"""
+
+inp_string = """Can I get some details on a specific medication?
+Pharmacy name is James Pharmacy and acct no is 6513.
+I’m looking for details about a certain medication.
+I’d appreciate it if you could tell me about the side effects associated with Atorvastatin -I’m feeling uneasy.
+Thanks!
+"""
+
+inp_string = """Could you provide some info on a medicine?
+Pharmacy name is James Pharmacy and acct no is 6513.
+I'd like to know more about a particular medicine.
+This medication worries me. Can you tell me what side effects I might experience with Metformin.
+Thanks for the help!
+"""
+
+inp_string = """I’m seeking information on a specific medicine.
+Pharmacy name is James Pharmacy and acct no is 6513.
+I’m seeking information on a specific medicine.
+I'm afraid of possible side effects and need more information before I take Loratadine.
+Thanks!
+"""
+
+inp_string = """Could you assist me with a medicine-related question?
+Pharmacy name is James Pharmacy and acct no is 6513.
+I’m interested in learning more about a medicine.
+I’m a bit afraid of potential reactions—what should I know about Ciprofloxacin's side effects?
+Thanks for the info!
+"""
+
+inp_string = """I’m seeking information on a specific medicine.
+Pharmacy name is James Pharmacy and acct no is 6513.
+I’m seeking information on a specific medicine.
+Can you please let me know the side effects of Omeprazole.I’m worried about how it might affect me.
+Thanks!
+"""
+
+inp_string = """I’d like to inquire about a drug.
+Pharmacy name is James Pharmacy and acct no is 6513.
+Can you help me with a medicine query?
+I’d like to be fully informed before taking Losartan, What side effects should I be aware of?
+Thanks!
+"""
+
+inp_string = """Could you provide some info on a medicine?
+Pharmacy name is James Pharmacy and acct no is 6513.
+I want information about a medicine.
+I'm afraid of possible side effects and need more information before I take Gabapentin.
+Thanks for the information!
+"""
+
+inp_string = """I’m interested in learning more about a medicine.
+Pharmacy name is James Pharmacy and acct no is 6513.
+I’m interested in learning more about a medicine.
+I’m a bit afraid of potential reactions—what should I know about Furosemide’s side effects?
+Thanks!
+"""
+
+inp_string = """Could you assist me with a medicine-related question?
+Pharmacy name is James Pharmacy and acct no is 6513.
+I want to know about a particular medicine.
+I’m nervous and just want to make sure I understand what side effects Amoxicillin can cause.
+Thanks!
+"""
+
+inp_string = """I'd like to know more about a particular medicine.
+Pharmacy name is James Pharmacy and acct no is 6513.
+I'd like to know more about a particular medicine.
+This medication worries me. Can you tell me what side effects I might experience with Albuterol.
+Thanks!
+"""
+
+
+
+
+## new ##
+1.Information Request:
+inp_string = """Hello,
+This is James Pharmacy, account number 6513.
+I’d like to get more information about the medication Zolax.
+Can you provide the details on how it works and its uses?
+Thanks for the help!
+"""
+Information Request:
+
+python
+Copy
+Edit
+inp_string = """Hello,
+This is James Pharmacy, account number 6513.
+I’d like to get more information about the medication Zolax.
+Can you provide the details on how it works and its uses?
+Thanks for the help!
+"""
+Prescription Inquiry:
+
+python
+Copy
+Edit
+inp_string = """Hello,
+This is James Pharmacy, account number 6513.
+I need to check the status of my prescription for Ibuprofen.
+Could you confirm whether it’s been processed or not?
+Thanks for your assistance!
+"""
+Restocking Query:
+
+python
+Copy
+Edit
+inp_string = """Hello,
+This is James Pharmacy, account number 6513.
+I’d like to know if Zolax has been restocked yet.
+Can you confirm if it’s available for order now?
+Thanks for the update!
+"""
+Availability Check:
+
+python
+Copy
+Edit
+inp_string = """Hello,
+This is James Pharmacy, account number 6513.
+Could you check if Paracetamol is available for purchase?
+I’d appreciate any information on its availability.
+Thanks for your help!
+"""
+Ordering Medicines:
+
+python
+Copy
+Edit
+inp_string = """Hello,
+This is James Pharmacy, account number 6513.
+I’d like to place an order for 100 units of Metformin.
+Can you assist with this order and provide any details needed?
+Thanks for your assistance!
+"""
+Dosage Instructions:
+
+python
+Copy
+Edit
+inp_string = """Hello,
+This is James Pharmacy, account number 6513.
+Could you provide me with the correct dosage instructions for Gabapentin?
+I want to ensure I’m taking it properly.
+Thanks for the clarification!
+"""
+Drug Interactions Inquiry:
+
+python
+Copy
+Edit
+inp_string = """Hello,
+This is James Pharmacy, account number 6513.
+I want to know if there are any known drug interactions between Ibuprofen and Atorvastatin.
+Could you provide any information on this?
+Thanks for your help!
+"""
+Refill Request:
+
+python
+Copy
+Edit
+inp_string = """Hello,
+This is James Pharmacy, account number 6513.
+I’d like to request a refill for my prescription of Lisinopril.
+Can you help process this request for me?
+Thanks for your assistance!
+"""
+Payment Query:
+
+python
+Copy
+Edit
+inp_string = """Hello,
+This is James Pharmacy, account number 6513.
+Could you clarify the payment details for my recent order of Aspirin?
+I’d appreciate any information on the payment status.
+Thanks for your help!
+"""
+Shipping Status Inquiry:
+
+python
+Copy
+Edit
+inp_string = """Hello,
+This is James Pharmacy, account number 6513.
+I’d like to inquire about the shipping status for my recent order of Paracetamol.
+Could you provide an update on when I can expect delivery?
+Thanks for the update!
+"""
+Return/Exchange Request:
+
+python
+Copy
+Edit
+inp_string = """Hello,
+This is James Pharmacy, account number 6513.
+I need to return some expired Zolax I recently purchased.
+Could you assist me with the return or exchange process?
+Thanks for your help!
+"""
+Storage Instructions:
+
+python
+Copy
+Edit
+inp_string = """Hello,
+This is James Pharmacy, account number 6513.
+Could you provide the correct storage instructions for my Metformin?
+I want to ensure it is stored properly.
+Thanks for your assistance!
+"""
+Medicine Expiry Date Inquiry:
+
+python
+Copy
+Edit
+inp_string = """Hello,
+This is James Pharmacy, account number 6513.
+Could you tell me the expiry date for the Paracetamol I purchased last week?
+I just want to make sure it’s still good to use.
+Thanks for the info!
+"""
+Manufacturer Details Request:
+
+python
+Copy
+Edit
+inp_string = """Hello,
+This is James Pharmacy, account number 6513.
+Can you provide the manufacturer details for Amlodipine?
+I’d like to know more about the maker of this medication.
+Thanks for your help!
+"""
+Generic Version Inquiry:
+
+python
+Copy
+Edit
+inp_string = """Hello,
+This is James Pharmacy, account number 6513.
+I want to know if there is a generic version of Losartan available.
+Can you provide any details on the availability of a generic version?
+Thanks for the information!
+"""
+Drug Availability in Local Pharmacy:
+
+python
+Copy
+Edit
+inp_string = """Hello,
+This is James Pharmacy, account number 6513.
+Can you confirm if Zolax is available in my local pharmacy?
+I’d appreciate any information on this.
+Thanks for your help!
+"""
+Insurance Coverage Inquiry:
+
+python
+Copy
+Edit
+inp_string = """Hello,
+This is James Pharmacy, account number 6513.
+Can you tell me if my insurance covers the cost of Metformin?
+I’d like to know if I can use insurance to pay for it.
+Thanks for your help!
+"""
+Drug Recall Information:
+
+python
+Copy
+Edit
+inp_string = """Hello,
+This is James Pharmacy, account number 6513.
+I heard there may be a recall for Ibuprofen.
+Can you confirm if this is true and provide more details?
+Thanks for the information!
+"""
+Prescription Renewal:
+
+python
+Copy
+Edit
+inp_string = """Hello,
+This is James Pharmacy, account number 6513.
+Can you help me renew my prescription for Lisinopril?
+I’d appreciate your assistance in renewing this prescription.
+Thanks for your help!
+"""
+Brand vs. Generic Inquiry:
+
+python
+Copy
+Edit
+inp_string = """Hello,
+This is James Pharmacy, account number 6513.
+Could you explain the difference between the brand-name and generic versions of Paracetamol?
+I’d like to understand if there’s any difference in effectiveness or cost.
+Thanks for the clarification!
+"""
+
+
+21. Patient Assistance Program Inquiry
+python
+Copy
+Edit
+inp_string = """Hello,
+Pharmacy name is James Pharmacy and acct no is 6513.
+I’d like to know about available patient assistance programs.
+Can you tell me if there are any financial help options for low-income patients?
+Thanks a lot!"""
+22. Discount Program Inquiry
+python
+Copy
+Edit
+inp_string = """Hello,
+Pharmacy name is James Pharmacy and acct no is 6513.
+I’m looking into cost-saving options.
+Could you please provide details on any discount programs you offer?
+Thanks for your help!"""
+23. Clinical Trial Information Request
+python
+Copy
+Edit
+inp_string = """Hello,
+Pharmacy name is James Pharmacy and acct no is 6513.
+I'm doing research related to clinical trials.
+Can you share if there are any trials related to diabetes medications?
+Appreciate your support, thanks!"""
+24. Pharmacy Location Inquiry
+python
+Copy
+Edit
+inp_string = """Hello,
+Pharmacy name is James Pharmacy and acct no is 6513.
+I’m trying to locate the nearest pharmacy branch.
+Could you share your location details or service areas?
+Thank you very much!"""
+25. Home Delivery Service Query
+python
+Copy
+Edit
+inp_string = """Hello,
+Pharmacy name is James Pharmacy and acct no is 6513.
+I’m interested in getting medications delivered to my home.
+Can you let me know if you offer a delivery service?
+Thanks a lot!"""
+26. Emergency Use Information
+python
+Copy
+Edit
+inp_string = """Hello,
+Pharmacy name is James Pharmacy and acct no is 6513.
+I need urgent information on emergency medicine usage.
+Can you guide me on when to use Epinephrine during an allergic reaction?
+Thank you!"""
+27. Usage Instructions for Children
+python
+Copy
+Edit
+inp_string = """Hello,
+Pharmacy name is James Pharmacy and acct no is 6513.
+I need usage directions for pediatric medications.
+How should I administer Ibuprofen to a 6-year-old child?
+Thanks for the clarification!"""
+28. Medication for Specific Conditions
+python
+Copy
+Edit
+inp_string = """Hello,
+Pharmacy name is James Pharmacy and acct no is 6513.
+I’m trying to find the right medicine for hypertension.
+Could you recommend options commonly used to treat this condition?
+Thanks for your help!"""
+29. Pharmacy Service Hours
+python
+Copy
+Edit
+inp_string = """Hello,
+Pharmacy name is James Pharmacy and acct no is 6513.
+I’d like to confirm your working hours.
+When is your pharmacy open for prescription pickups?
+Thanks!"""
+30. Over-the-Counter Availability
+python
+Copy
+Edit
+inp_string = """Hello,
+Pharmacy name is James Pharmacy and acct no is 6513.
+I want to check if a medicine is available OTC.
+Is Claritin available without a prescription at your store?
+Thanks for the info!"""
+31. Medications for Special Populations (e.g., Pregnant Women)
+python
+Copy
+Edit
+inp_string = """Hello,
+Pharmacy name is James Pharmacy and acct no is 6513.
+I need advice on medicine safety during pregnancy.
+Are prenatal vitamins and medications like Acetaminophen safe?
+Thank you so much!"""
+32. Drug Storage and Handling Instructions
+python
+Copy
+Edit
+inp_string = """Hello,
+Pharmacy name is James Pharmacy and acct no is 6513.
+I’m unsure about how to store my medication.
+Could you tell me the correct way to store insulin?
+Thanks for guiding me!"""
+33. Dosage Adjustments
+python
+Copy
+Edit
+inp_string = """Hello,
+Pharmacy name is James Pharmacy and acct no is 6513.
+I need advice on adjusting my medication dose.
+Should I change my Metoprolol dose if I miss a day?
+Thanks a lot!"""
+34. Withdrawal Symptoms Information
+python
+Copy
+Edit
+inp_string = """Hello,
+Pharmacy name is James Pharmacy and acct no is 6513.
+I’m concerned about stopping my medication.
+Can you let me know if withdrawing from Sertraline causes any symptoms?
+Thank you for the guidance!"""
+35. Expired Medication Inquiry
+python
+Copy
+Edit
+inp_string = """Hello,
+Pharmacy name is James Pharmacy and acct no is 6513.
+I’ve found some expired medication.
+Is it safe to use Ibuprofen that expired two months ago?
+Thanks for the advice!"""
+36. Non-prescription Drug Availability
+python
+Copy
+Edit
+inp_string = """Hello,
+Pharmacy name is James Pharmacy and acct no is 6513.
+I want to know about non-prescription options.
+Do you sell pain relievers like Acetaminophen over the counter?
+Thank you!"""
+37. Medicine for Specific Age Groups
+python
+Copy
+Edit
+inp_string = """Hello,
+Pharmacy name is James Pharmacy and acct no is 6513.
+I need to find age-appropriate medication.
+What allergy medications are suitable for kids aged 3–5?
+Thanks for the help!"""
+38. Changes in Medication Composition
+python
+Copy
+Edit
+inp_string = """Hello,
+Pharmacy name is James Pharmacy and acct no is 6513.
+I noticed my pills look different than before.
+Could there have been a change in the formulation of my Amlodipine?
+Thank you!"""
+39. Medication Formulation Inquiry (e.g., tablet, liquid)
+python
+Copy
+Edit
+inp_string = """Hello,
+Pharmacy name is James Pharmacy and acct no is 6513.
+I’m looking for a specific form of medication.
+Is Diphenhydramine available as a liquid instead of tablets?
+Thanks!"""
+40. Medication for Off-label Uses
+python
+Copy
+Edit
+inp_string = """Hello,
+Pharmacy name is James Pharmacy and acct no is 6513.
+I want to understand off-label use of a medication.
+Is Gabapentin commonly used for anxiety even though it's not its main use?
+Thank you!"""
+41. Consultation Request for Drug Prescription
+python
+Copy
+Edit
+inp_string = """Hello,
+Pharmacy name is James Pharmacy and acct no is 6513.
+I need help getting a medication prescribed.
+Can you connect me with a pharmacist or doctor for a consultation?
+Thanks for arranging that!"""
+42. Pill Identification Assistance
+python
+Copy
+Edit
+inp_string = """Hello,
+Pharmacy name is James Pharmacy and acct no is 6513.
+I found a loose pill and need help identifying it.
+It's round, white, and has 'M 15' on one side—can you help?
+Thanks for your assistance!"""
+43. Emergency Prescription Refill
+python
+Copy
+Edit
+inp_string = """Hello,
+Pharmacy name is James Pharmacy and acct no is 6513.
+I urgently need a prescription refill.
+Can you refill my blood pressure medicine today in case of emergency?
+Thank you!"""
+44. Pharmacy Policy Inquiry
+python
+Copy
+Edit
+inp_string = """Hello,
+Pharmacy name is James Pharmacy and acct no is 6513.
+I’d like to know your policy on returns and exchanges.
+What’s your procedure for returning unused medications?
+Thanks!"""
+45. Formulary Information Request
+python
+Copy
+Edit
+inp_string = """Hello,
+Pharmacy name is James Pharmacy and acct no is 6513.
+I’m reviewing a list of covered medications.
+Can you send me your formulary or list of approved drugs?
+Thanks in advance!"""
+46. Medication Assistance for Veterans
+python
+Copy
+Edit
+inp_string = """Hello,
+Pharmacy name is James Pharmacy and acct no is 6513.
+I’m a veteran looking for medication support.
+Do you have any veteran-specific discount or assistance programs?
+Thank you so much!"""
+47. Drug Compatibility Inquiry (e.g., food or drink)
+python
+Copy
+Edit
+inp_string = """Hello,
+Pharmacy name is James Pharmacy and acct no is 6513.
+I’m wondering about food interactions.
+Is it safe to drink grapefruit juice while taking Atorvastatin?
+Thanks for clarifying!"""
+48. Side Effects Monitoring Advice
+
+inp_string = """Hello,
+Pharmacy name is James Pharmacy and acct no is 6513.
+I want to monitor medication side effects properly.
+How should I track and report side effects from Sertraline?
+Thank you for your help!"""
+49. International Availability of Medicine
+
+inp_string = """Hello,
+Pharmacy name is James Pharmacy and acct no is 6513.
+I’m planning to travel internationally.
+Is Metformin available overseas or should I take extra with me?
+Thanks a lot!"""
+50. Discount Coupons/Offers Inquiry
+
+inp_string = """Hello,
+Pharmacy name is James Pharmacy and acct no is 6513.
+I’m trying to save on medication costs.
+Do you have any current coupons or special offers for prescriptions?
+Thanks so much!"""
