@@ -1,0 +1,1498 @@
+1. What is Regex?
+
+Regex (short for Regular Expression) is a powerful tool used to search, match, and manipulate text based on specific patterns. It's like a search pattern that helps you find exactly what you want in a large text.
+
+For example, if you want to find dates in a document, you can use a regex pattern that matches the format of the date (like YYYY-MM-DD).
+
+Regex function explanation (small part):
+
+We used a regex pattern to find and extract file names and timestamps from each CSV row string because a row can have multiple filenames and timestamps mixed in commas.
+
+The regex searches for patterns like YYYY-MM-DDThh:mm:ss (ISO timestamp) and file name patterns, so we can pick out the exact start and end times and related file info for calculating AHT.
+
+2. How is Regex useful in CSV files?
+
+CSV files contain structured data separated by commas. Sometimes, the data inside a CSV can be complex strings (like dictionaries or JSON). Regex helps you:
+
+Extract specific pieces of information (like timestamps or IDs).
+
+Match patterns (e.g., dates, times, UUIDs).
+
+Separate or split data based on patterns.
+
+3. Your task in Hinglish
+
+Aapko ek CSV file mein se start time aur end time nikalna hai, jisse aap average hold time (AHT) calculate kar sakein.
+
+AHT = End Time - Start Time
+
+CSV file dictionaries aur strings ki form mein hai, toh aapko regex use karke ye information extract karni hai.
+
+Phir aapko ek nayi CSV file banani hai jisme:
+
+File name ho
+
+Aur AHT ke columns ho
+
+4. About the example data (CSV file name and format)
+
+CSV file ka naam hai: InspiraFinancialTrust-metadata.csv
+
+Iske andar data kuch is tarah ka hai (aapne diya hai):
+
+{4595259,3ac6197a-1e66-4036-907e-2f30997096c1,2025-07-28-23-59-02_679169126381_VOICE_acd98fdc-63f0-4904-953e-ab6db99e79a4.mp4,71c608cd-6a67-4bba-a6f0-988bb2794281,Mon Jul 28 2025 18:00:27 GMT-0600 (Mountain Daylight Time),,,2,4595259/71c608cd-6a67-4bba-a6f0-988bb2794281_Standard,16432357,2025-07-28T18:00:27-06:00,450.9KB,6.79169E+11,...
+...
+"startTime:""2025-07-28T23:59:02.205Z"","endTime:""2025-07-29T00:00:24.05Z"",}
+
+Yaha start time aur end time aise likhe hain: "startTime:""2025-07-28T23:59:02.205Z"" aur "endTime:""2025-07-29T00:00:24.05Z"".
+
+5. Regex to extract start time and end time
+
+To extract these, a regex pattern could be:
+
+startTime:"([^"]+)"  # This will capture the start time
+endTime:"([^"]+)"    # This will capture the end time
+
+
+Explanation:
+
+startTime:"([^"]+)" means: look for startTime:", then capture everything until the next ".
+
+Same for endTime.
+
+
+
+PYTHON CODE
+
+
+import re
+from datetime import datetime
+
+# Sample CSV row string (one line from CSV)
+row = '''your entire row string here'''
+
+# Regex patterns
+start_time_pattern = r'startTime:"([^"]+)"'
+end_time_pattern = r'endTime:"([^"]+)"'
+
+# Extract start time and end time
+start_time_match = re.search(start_time_pattern, row)
+end_time_match = re.search(end_time_pattern, row)
+
+if start_time_match and end_time_match:
+    start_time_str = start_time_match.group(1)
+    end_time_str = end_time_match.group(1)
+    
+    # Convert string to datetime
+    start_time = datetime.fromisoformat(start_time_str.replace('Z', '+00:00'))
+    end_time = datetime.fromisoformat(end_time_str.replace('Z', '+00:00'))
+    
+    # Calculate AHT (in seconds)
+    aht = (end_time - start_time).total_seconds()
+    
+    print("Start Time:", start_time)
+    print("End Time:", end_time)
+    print("Average Hold Time (seconds):", aht)
+else:
+    print("Start time or end time not found")
+
+
+
+. Next steps
+
+Iterate over each row in the CSV file.
+
+Extract file name and the start/end times using regex.
+
+Calculate AHT.
+
+Write results to a new CSV file with columns: FileName, StartTime, EndTime, AHT
+
+
+*********************************************************************************************
+
+
+Step 1: Folder structure bana lo
+
+Aap ek simple folder structure bana sakte ho jisme:
+
+project-folder/
+    input/          # Jahan pe aap CSV file rakhoge (InspiraFinancialTrust-metadata.csv)
+    output/         # Jahan pe aap naya CSV with AHT results save karoge
+    scripts/        # Jahan pe aap Python script/runs rakhenge
+
+Step 2: File placement
+
+Jo CSV file hai, usko input/ folder mein daal do.
+
+Script likh ke scripts/ folder mein rakhna.
+
+Output nikal ke output/ folder mein save karna.
+
+Step 3: Data extraction process (step by step)
+
+CSV file read karni hai
+Python mein csv module ya pandas use karke CSV file line by line ya row by row padhna.
+
+Regex lagana
+Har row mein se startTime aur endTime regex se extract karna.
+
+Datetime mein convert karna
+Jo string mila hai usko datetime object mein convert karna.
+
+AHT calculate karna
+EndTime - StartTime karna aur seconds/ minutes mein convert karna.
+
+Nayi CSV file likhna
+FileName, StartTime, EndTime, AHT columns ke saath ek nayi CSV file banani.
+
+Step 4: Sample commands to create folders (Linux/Mac/WSL)
+mkdir -p project-folder/input
+mkdir -p project-folder/output
+mkdir -p project-folder/scripts
+
+Step 5: Simple flow
+
+Copy your CSV to project-folder/input/InspiraFinancialTrust-metadata.csv
+
+Write script in project-folder/scripts/process_aht.py
+
+Run script, output aayega project-folder/output/aht_results.csv
+
+
+******************************************************************************************************
+
+
+
+Perfect! Chalo ab ek full Python script banaate hain jo:
+
+Input CSV padhe
+
+startTime aur endTime ko regex se extract kare
+
+AHT (Average Hold Time) calculate kare
+
+Output ek nayi CSV file mein likhe
+
+✅ Folder Structure (recap)
+
+Make sure your folder structure is like:
+
+project-folder/
+├── input/
+│   └── InspiraFinancialTrust-metadata.csv
+├── output/
+│   └── (will contain aht_results.csv)
+└── scripts/
+    └── process_aht.py
+
+🐍 Python Script: process_aht.py
+import csv
+import re
+from datetime import datetime
+import os
+
+# File paths
+input_file = '../input/InspiraFinancialTrust-metadata.csv'
+output_file = '../output/aht_results.csv'
+
+# Regex patterns
+start_time_pattern = r'startTime:"([^"]+)"'
+end_time_pattern = r'endTime:"([^"]+)"'
+
+# Output data list
+output_data = []
+
+# Read input CSV
+with open(input_file, 'r', encoding='utf-8') as csvfile:
+    reader = csv.reader(csvfile)
+    for row in reader:
+        row_str = ','.join(row)  # join row to make single string
+
+        # Extract using regex
+        start_match = re.search(start_time_pattern, row_str)
+        end_match = re.search(end_time_pattern, row_str)
+
+        if start_match and end_match:
+            start_str = start_match.group(1)
+            end_str = end_match.group(1)
+
+            try:
+                # Convert to datetime
+                start_time = datetime.fromisoformat(start_str.replace('Z', '+00:00'))
+                end_time = datetime.fromisoformat(end_str.replace('Z', '+00:00'))
+
+                # Calculate AHT
+                aht_seconds = (end_time - start_time).total_seconds()
+
+                # File name (try to extract from known column or fallback)
+                file_name = row[2] if len(row) > 2 else "Unknown"
+
+                # Save to output data
+                output_data.append([file_name, start_time.isoformat(), end_time.isoformat(), round(aht_seconds, 2)])
+            except Exception as e:
+                print("Error parsing time:", e)
+        else:
+            print("startTime or endTime not found in row.")
+
+# Write to output CSV
+with open(output_file, 'w', newline='', encoding='utf-8') as outfile:
+    writer = csv.writer(outfile)
+    writer.writerow(['FileName', 'StartTime', 'EndTime', 'AHT (seconds)'])  # Header
+    writer.writerows(output_data)
+
+print(f"✅ Done! Extracted AHT data saved to {output_file}")
+
+🚀 How to run this:
+
+Open terminal or command prompt.
+
+Navigate to project-folder/scripts/
+
+Run:
+
+python process_aht.py
+
+
+Output file will be saved at: project-folder/output/aht_results.csv
+
+📌 Example output CSV:
+FileName	StartTime	EndTime	AHT (seconds)
+2025-07-28...acd98fdc-63f0-...ab6db99e79a4.mp4	2025-07-28T23:59:02.205Z	2025-07-29T00:00:24.050Z	81.84
+
+
+
+
+
+*************************************************************************************************************
+
+
+
+You said:
+Uploaded image
+4595259,3ac6197a-1e66-4036-907e-2f30997096c1,2025-07-28-23-59-02_679169126381_VOICE_acd98fdc-63f0-4904-953e-ab6db99e79a4.mp4,71c608cd-6a67-4bba-a6f0-988bb2794281,Mon Jul 28 2025 18:00:27 GMT-0600 (Mountain Daylight Time),,,2,4595259/71c608cd-6a67-4bba-a6f0-988bb2794281_Standard,16432357,2025-07-28T18:00:27-06:00,450.9KB,6.79169E+11,,,,20ebba66-f300-4692-9d70-daa117cb7834,,,,461721,,," ""BusinessUnit"":4595259","PublicId:""3ac6197a-1e66-4036-907e-2f30997096c1""","PrivateId:""71c608cd-6a67-4bba-a6f0-988bb2794281""",FileType:1,"Metadata:""tenantId"":""11e9c315-53eb-4d50-80f4-0242ac110004""","recordingId:""9b3f3469-e2ed-48f4-9c28-41a34a2a18fd""","mediaType:""VOICE""","summation:""STEREO""","businessUnit:""4595259""","participants:[""ContactNo"":""679169140956""","Agent:""19643654""","Skill:""16432357""","UserId:""11ed60ff-accc-98d0-98c8-0242ac110002""","ParticipantType:""AGENT""","Team:""20ebba66-f300-4692-9d70-daa117cb7834""","ContactNo:""679169130874""","Agent:""38845605""","Skill:""20712987""","UserId:""11ef9e2f-31f8-9180-b841-0242ac110002""","ParticipantType:""AGENT""","Team:""a0a03a70-2af6-4e0d-965d-76bd82f2256f""]","metadataExtensions:""tenantName"":""millennium_trust_company_llc32282498""","acdContactId:""679169126381""","participants:""[\""ParticipantType\"":\""AGENT\""","\""ContactNo\"":\""679169140956\""","\""UserId\"":\""11ed60ff-accc-98d0-98c8-0242ac110002\""","\""Agent\"":\""19643654\""","\""Team\"":\""20ebba66-f300-4692-9d70-daa117cb7834\""","\""Skill\"":\""16432357\""","\""ParticipantType\"":\""AGENT\""","\""ContactNo\"":\""679169130874\""","\""UserId\"":\""11ef9e2f-31f8-9180-b841-0242ac110002\""","\""Agent\"":\""38845605\""","\""Team\"":\""a0a03a70-2af6-4e0d-965d-76bd82f2256f\""","\""Skill\"":\""20712987\""]""","Application:""MCR""","SegmentId:""acd98fdc-63f0-4904-953e-ab6db99e79a4""","ContactId:""679169126381""","MCRContactId:""01c97b8e-7799-4f7a-a892-5e0b944725fa""","FileName:""2025-07-28-23-59-02_679169126381_VOICE_acd98fdc-63f0-4904-953e-ab6db99e79a4.mp4""","startTime:""2025-07-28T23:59:02.205Z""","endTime:""2025-07-29T00:00:24.05Z""","codec:""AAC""","contactNo:""679169140956""","type:""segment""","Bucket:""ic-storageservices-files-ao""",ExternalBucket:0,"EncrypType:""default""","Region:""us-west-2""",CreationDate:1753747227398,"Path:""4595259/71c608cd-6a67-4bba-a6f0-988bb2794281_Standard""",State:2,"ttlIndex:""ttl-v2""",FileSize:461721,,,,,,,,,,,,,,,,,,
+ChatGPT said:
+Sure! Let's break down your request step-by-step.
+
+1. What is Regex?
+Regex (short for Regular Expression) is a powerful tool used to search, match, and manipulate text based on specific patterns. It's like a search pattern that helps you find exactly what you want in a large text.
+
+For example, if you want to find dates in a document, you can use a regex pattern that matches the format of the date (like YYYY-MM-DD).
+
+2. How is Regex useful in CSV files?
+CSV files contain structured data separated by commas. Sometimes, the data inside a CSV can be complex strings (like dictionaries or JSON). Regex helps you:
+
+Extract specific pieces of information (like timestamps or IDs).
+
+Match patterns (e.g., dates, times, UUIDs).
+
+Separate or split data based on patterns.
+
+3. Your task in Hinglish
+Aapko ek CSV file mein se start time aur end time nikalna hai, jisse aap average hold time (AHT) calculate kar sakein.
+
+AHT = End Time - Start Time
+
+CSV file dictionaries aur strings ki form mein hai, toh aapko regex use karke ye information extract karni hai.
+
+Phir aapko ek nayi CSV file banani hai jisme:
+
+File name ho
+
+Aur AHT ke columns ho
+
+4. About the example data (CSV file name and format)
+CSV file ka naam hai: InspiraFinancialTrust-metadata.csv
+
+Iske andar data kuch is tarah ka hai (aapne diya hai):
+
+4595259,3ac6197a-1e66-4036-907e-2f30997096c1,2025-07-28-23-59-02_679169126381_VOICE_acd98fdc-63f0-4904-953e-ab6db99e79a4.mp4,71c608cd-6a67-4bba-a6f0-988bb2794281,Mon Jul 28 2025 18:00:27 GMT-0600 (Mountain Daylight Time),,,2,4595259/71c608cd-6a67-4bba-a6f0-988bb2794281_Standard,16432357,2025-07-28T18:00:27-06:00,450.9KB,6.79169E+11,...
+...
+"startTime:""2025-07-28T23:59:02.205Z"","endTime:""2025-07-29T00:00:24.05Z"",
+Yaha start time aur end time aise likhe hain: "startTime:""2025-07-28T23:59:02.205Z"" aur "endTime:""2025-07-29T00:00:24.05Z"".
+
+5. Regex to extract start time and end time
+To extract these, a regex pattern could be:
+
+startTime:"([^"]+)"  # This will capture the start time
+endTime:"([^"]+)"    # This will capture the end time
+Explanation:
+
+startTime:"([^"]+)" means: look for startTime:", then capture everything until the next ".
+
+Same for endTime.
+
+6. Python code example
+Here’s how you could do this in Python:
+
+import re
+from datetime import datetime
+
+# Sample CSV row string (one line from CSV)
+row = '''your entire row string here'''
+
+# Regex patterns
+start_time_pattern = r'startTime:"([^"]+)"'
+end_time_pattern = r'endTime:"([^"]+)"'
+
+# Extract start time and end time
+start_time_match = re.search(start_time_pattern, row)
+end_time_match = re.search(end_time_pattern, row)
+
+if start_time_match and end_time_match:
+    start_time_str = start_time_match.group(1)
+    end_time_str = end_time_match.group(1)
+    
+    # Convert string to datetime
+    start_time = datetime.fromisoformat(start_time_str.replace('Z', '+00:00'))
+    end_time = datetime.fromisoformat(end_time_str.replace('Z', '+00:00'))
+    
+    # Calculate AHT (in seconds)
+    aht = (end_time - start_time).total_seconds()
+    
+    print("Start Time:", start_time)
+    print("End Time:", end_time)
+    print("Average Hold Time (seconds):", aht)
+else:
+    print("Start time or end time not found")
+7. Next steps
+Iterate over each row in the CSV file.
+
+Extract file name and the start/end times using regex.
+
+Calculate AHT.
+
+Write results to a new CSV file with columns: FileName, StartTime, EndTime, AHT
+
+If you want, I can help you write the full script for this! Just let me know. How does that sound?
+
+You said:
+thik hai samjh agaya ab ye batao kya naam ka folder banau ky kya steps karo follow ab iske baad kaha se kaise extract hoga data is file se pehle folder banau kya
+ChatGPT said:
+Great! Ab jo bhi step karna hai, usko organize karna important hai taaki data easily manage ho jaye.
+
+Step 1: Folder structure bana lo
+Aap ek simple folder structure bana sakte ho jisme:
+
+project-folder/
+    input/          # Jahan pe aap CSV file rakhoge (InspiraFinancialTrust-metadata.csv)
+    output/         # Jahan pe aap naya CSV with AHT results save karoge
+    scripts/        # Jahan pe aap Python script/runs rakhenge
+Step 2: File placement
+Jo CSV file hai, usko input/ folder mein daal do.
+
+Script likh ke scripts/ folder mein rakhna.
+
+Output nikal ke output/ folder mein save karna.
+
+Step 3: Data extraction process (step by step)
+CSV file read karni hai
+Python mein csv module ya pandas use karke CSV file line by line ya row by row padhna.
+
+Regex lagana
+Har row mein se startTime aur endTime regex se extract karna.
+
+Datetime mein convert karna
+Jo string mila hai usko datetime object mein convert karna.
+
+AHT calculate karna
+EndTime - StartTime karna aur seconds/ minutes mein convert karna.
+
+Nayi CSV file likhna
+FileName, StartTime, EndTime, AHT columns ke saath ek nayi CSV file banani.
+
+Step 4: Sample commands to create folders (Linux/Mac/WSL)
+mkdir -p project-folder/input
+mkdir -p project-folder/output
+mkdir -p project-folder/scripts
+Step 5: Simple flow
+Copy your CSV to project-folder/input/InspiraFinancialTrust-metadata.csv
+
+Write script in project-folder/scripts/process_aht.py
+
+Run script, output aayega project-folder/output/aht_results.csv
+
+Kya ye flow samajh aaya?
+Agar chaho toh main ek simple Python script bhi likh ke de sakta hoon jo ye pura kaam kare.
+
+Kya karna hai?
+
+You said:
+yes
+ChatGPT said:
+Perfect! Chalo ab ek full Python script banaate hain jo:
+
+Input CSV padhe
+
+startTime aur endTime ko regex se extract kare
+
+AHT (Average Hold Time) calculate kare
+
+Output ek nayi CSV file mein likhe
+
+✅ Folder Structure (recap)
+Make sure your folder structure is like:
+
+project-folder/
+├── input/
+│   └── InspiraFinancialTrust-metadata.csv
+├── output/
+│   └── (will contain aht_results.csv)
+└── scripts/
+    └── process_aht.py
+🐍 Python Script: process_aht.py
+import csv
+import re
+from datetime import datetime
+import os
+
+# File paths
+input_file = '../input/InspiraFinancialTrust-metadata.csv'
+output_file = '../output/aht_results.csv'
+
+# Regex patterns
+start_time_pattern = r'startTime:"([^"]+)"'
+end_time_pattern = r'endTime:"([^"]+)"'
+
+# Output data list
+output_data = []
+
+# Read input CSV
+with open(input_file, 'r', encoding='utf-8') as csvfile:
+    reader = csv.reader(csvfile)
+    for row in reader:
+        row_str = ','.join(row)  # join row to make single string
+
+        # Extract using regex
+        start_match = re.search(start_time_pattern, row_str)
+        end_match = re.search(end_time_pattern, row_str)
+
+        if start_match and end_match:
+            start_str = start_match.group(1)
+            end_str = end_match.group(1)
+
+            try:
+                # Convert to datetime
+                start_time = datetime.fromisoformat(start_str.replace('Z', '+00:00'))
+                end_time = datetime.fromisoformat(end_str.replace('Z', '+00:00'))
+
+                # Calculate AHT
+                aht_seconds = (end_time - start_time).total_seconds()
+
+                # File name (try to extract from known column or fallback)
+                file_name = row[2] if len(row) > 2 else "Unknown"
+
+                # Save to output data
+                output_data.append([file_name, start_time.isoformat(), end_time.isoformat(), round(aht_seconds, 2)])
+            except Exception as e:
+                print("Error parsing time:", e)
+        else:
+            print("startTime or endTime not found in row.")
+
+# Write to output CSV
+with open(output_file, 'w', newline='', encoding='utf-8') as outfile:
+    writer = csv.writer(outfile)
+    writer.writerow(['FileName', 'StartTime', 'EndTime', 'AHT (seconds)'])  # Header
+    writer.writerows(output_data)
+
+print(f"✅ Done! Extracted AHT data saved to {output_file}")
+🚀 How to run this:
+Open terminal or command prompt.
+
+Navigate to project-folder/scripts/
+
+Run:
+
+python process_aht.py
+Output file will be saved at: project-folder/output/aht_results.csv
+
+📌 Example output CSV:
+FileName	StartTime	EndTime	AHT (seconds)
+2025-07-28...acd98fdc-63f0-...ab6db99e79a4.mp4	2025-07-28T23:59:02.205Z	2025-07-29T00:00:24.050Z	81.84
+Need Help?
+Let me know if:
+
+Folder path is different
+
+Data is in different format
+
+You want output in minutes/hours
+
+Ready to go?
+
+You said:
+script run karne se pehle folder to  banawado jisme jisme store hoga pehle please
+ChatGPT said:
+Bilkul! Pehle folder structure bana lete hain jaise ki discussed kiya tha. Aap yeh command terminal/command prompt me chalao. (Assuming you're inside your project-folder or want to create one.)
+
+🛠️ Step-by-step: Folder Structure Create Karne Ke Commands
+🖥️ On Windows CMD or PowerShell:
+mkdir project-folder
+cd project-folder
+mkdir input
+mkdir output
+mkdir scripts
+🐧 On Linux/macOS/WSL:
+mkdir -p project-folder/input
+mkdir -p project-folder/output
+mkdir -p project-folder/scripts
+cd project-folder
+✅ Folder Structure After Running:
+project-folder/
+├── input/      # <- CSV file yaha daalo
+├── output/     # <- Script yaha naya CSV banayega
+└── scripts/    # <- Script yaha save hoga
+📥 Next Step:
+Copy your file InspiraFinancialTrust-metadata.csv into the input folder.
+
+Paste the process_aht.py Python script in the scripts folder (as shared above).
+
+Run the script.
+
+
+
+**********************************************************************************************
+
+
+
+You said:
+Uploaded image
+4595259,3ac6197a-1e66-4036-907e-2f30997096c1,2025-07-28-23-59-02_679169126381_VOICE_acd98fdc-63f0-4904-953e-ab6db99e79a4.mp4,71c608cd-6a67-4bba-a6f0-988bb2794281,Mon Jul 28 2025 18:00:27 GMT-0600 (Mountain Daylight Time),,,2,4595259/71c608cd-6a67-4bba-a6f0-988bb2794281_Standard,16432357,2025-07-28T18:00:27-06:00,450.9KB,6.79169E+11,,,,20ebba66-f300-4692-9d70-daa117cb7834,,,,461721,,," ""BusinessUnit"":4595259","PublicId:""3ac6197a-1e66-4036-907e-2f30997096c1""","PrivateId:""71c608cd-6a67-4bba-a6f0-988bb2794281""",FileType:1,"Metadata:""tenantId"":""11e9c315-53eb-4d50-80f4-0242ac110004""","recordingId:""9b3f3469-e2ed-48f4-9c28-41a34a2a18fd""","mediaType:""VOICE""","summation:""STEREO""","businessUnit:""4595259""","participants:[""ContactNo"":""679169140956""","Agent:""19643654""","Skill:""16432357""","UserId:""11ed60ff-accc-98d0-98c8-0242ac110002""","ParticipantType:""AGENT""","Team:""20ebba66-f300-4692-9d70-daa117cb7834""","ContactNo:""679169130874""","Agent:""38845605""","Skill:""20712987""","UserId:""11ef9e2f-31f8-9180-b841-0242ac110002""","ParticipantType:""AGENT""","Team:""a0a03a70-2af6-4e0d-965d-76bd82f2256f""]","metadataExtensions:""tenantName"":""millennium_trust_company_llc32282498""","acdContactId:""679169126381""","participants:""[\""ParticipantType\"":\""AGENT\""","\""ContactNo\"":\""679169140956\""","\""UserId\"":\""11ed60ff-accc-98d0-98c8-0242ac110002\""","\""Agent\"":\""19643654\""","\""Team\"":\""20ebba66-f300-4692-9d70-daa117cb7834\""","\""Skill\"":\""16432357\""","\""ParticipantType\"":\""AGENT\""","\""ContactNo\"":\""679169130874\""","\""UserId\"":\""11ef9e2f-31f8-9180-b841-0242ac110002\""","\""Agent\"":\""38845605\""","\""Team\"":\""a0a03a70-2af6-4e0d-965d-76bd82f2256f\""","\""Skill\"":\""20712987\""]""","Application:""MCR""","SegmentId:""acd98fdc-63f0-4904-953e-ab6db99e79a4""","ContactId:""679169126381""","MCRContactId:""01c97b8e-7799-4f7a-a892-5e0b944725fa""","FileName:""2025-07-28-23-59-02_679169126381_VOICE_acd98fdc-63f0-4904-953e-ab6db99e79a4.mp4""","startTime:""2025-07-28T23:59:02.205Z""","endTime:""2025-07-29T00:00:24.05Z""","codec:""AAC""","contactNo:""679169140956""","type:""segment""","Bucket:""ic-storageservices-files-ao""",ExternalBucket:0,"EncrypType:""default""","Region:""us-west-2""",CreationDate:1753747227398,"Path:""4595259/71c608cd-6a67-4bba-a6f0-988bb2794281_Standard""",State:2,"ttlIndex:""ttl-v2""",FileSize:461721,,,,,,,,,,,,,,,,,,
+ChatGPT said:
+Sure! Let's break down your request step-by-step.
+
+1. What is Regex?
+Regex (short for Regular Expression) is a powerful tool used to search, match, and manipulate text based on specific patterns. It's like a search pattern that helps you find exactly what you want in a large text.
+
+For example, if you want to find dates in a document, you can use a regex pattern that matches the format of the date (like YYYY-MM-DD).
+
+2. How is Regex useful in CSV files?
+CSV files contain structured data separated by commas. Sometimes, the data inside a CSV can be complex strings (like dictionaries or JSON). Regex helps you:
+
+Extract specific pieces of information (like timestamps or IDs).
+
+Match patterns (e.g., dates, times, UUIDs).
+
+Separate or split data based on patterns.
+
+3. Your task in Hinglish
+Aapko ek CSV file mein se start time aur end time nikalna hai, jisse aap average hold time (AHT) calculate kar sakein.
+
+AHT = End Time - Start Time
+
+CSV file dictionaries aur strings ki form mein hai, toh aapko regex use karke ye information extract karni hai.
+
+Phir aapko ek nayi CSV file banani hai jisme:
+
+File name ho
+
+Aur AHT ke columns ho
+
+4. About the example data (CSV file name and format)
+CSV file ka naam hai: InspiraFinancialTrust-metadata.csv
+
+Iske andar data kuch is tarah ka hai (aapne diya hai):
+
+4595259,3ac6197a-1e66-4036-907e-2f30997096c1,2025-07-28-23-59-02_679169126381_VOICE_acd98fdc-63f0-4904-953e-ab6db99e79a4.mp4,71c608cd-6a67-4bba-a6f0-988bb2794281,Mon Jul 28 2025 18:00:27 GMT-0600 (Mountain Daylight Time),,,2,4595259/71c608cd-6a67-4bba-a6f0-988bb2794281_Standard,16432357,2025-07-28T18:00:27-06:00,450.9KB,6.79169E+11,...
+...
+"startTime:""2025-07-28T23:59:02.205Z"","endTime:""2025-07-29T00:00:24.05Z"",
+Yaha start time aur end time aise likhe hain: "startTime:""2025-07-28T23:59:02.205Z"" aur "endTime:""2025-07-29T00:00:24.05Z"".
+
+5. Regex to extract start time and end time
+To extract these, a regex pattern could be:
+
+startTime:"([^"]+)"  # This will capture the start time
+endTime:"([^"]+)"    # This will capture the end time
+Explanation:
+
+startTime:"([^"]+)" means: look for startTime:", then capture everything until the next ".
+
+Same for endTime.
+
+6. Python code example
+Here’s how you could do this in Python:
+
+import re
+from datetime import datetime
+
+# Sample CSV row string (one line from CSV)
+row = '''your entire row string here'''
+
+# Regex patterns
+start_time_pattern = r'startTime:"([^"]+)"'
+end_time_pattern = r'endTime:"([^"]+)"'
+
+# Extract start time and end time
+start_time_match = re.search(start_time_pattern, row)
+end_time_match = re.search(end_time_pattern, row)
+
+if start_time_match and end_time_match:
+    start_time_str = start_time_match.group(1)
+    end_time_str = end_time_match.group(1)
+    
+    # Convert string to datetime
+    start_time = datetime.fromisoformat(start_time_str.replace('Z', '+00:00'))
+    end_time = datetime.fromisoformat(end_time_str.replace('Z', '+00:00'))
+    
+    # Calculate AHT (in seconds)
+    aht = (end_time - start_time).total_seconds()
+    
+    print("Start Time:", start_time)
+    print("End Time:", end_time)
+    print("Average Hold Time (seconds):", aht)
+else:
+    print("Start time or end time not found")
+7. Next steps
+Iterate over each row in the CSV file.
+
+Extract file name and the start/end times using regex.
+
+Calculate AHT.
+
+Write results to a new CSV file with columns: FileName, StartTime, EndTime, AHT
+
+If you want, I can help you write the full script for this! Just let me know. How does that sound?
+
+You said:
+thik hai samjh agaya ab ye batao kya naam ka folder banau ky kya steps karo follow ab iske baad kaha se kaise extract hoga data is file se pehle folder banau kya
+ChatGPT said:
+Great! Ab jo bhi step karna hai, usko organize karna important hai taaki data easily manage ho jaye.
+
+Step 1: Folder structure bana lo
+Aap ek simple folder structure bana sakte ho jisme:
+
+project-folder/
+    input/          # Jahan pe aap CSV file rakhoge (InspiraFinancialTrust-metadata.csv)
+    output/         # Jahan pe aap naya CSV with AHT results save karoge
+    scripts/        # Jahan pe aap Python script/runs rakhenge
+Step 2: File placement
+Jo CSV file hai, usko input/ folder mein daal do.
+
+Script likh ke scripts/ folder mein rakhna.
+
+Output nikal ke output/ folder mein save karna.
+
+Step 3: Data extraction process (step by step)
+CSV file read karni hai
+Python mein csv module ya pandas use karke CSV file line by line ya row by row padhna.
+
+Regex lagana
+Har row mein se startTime aur endTime regex se extract karna.
+
+Datetime mein convert karna
+Jo string mila hai usko datetime object mein convert karna.
+
+AHT calculate karna
+EndTime - StartTime karna aur seconds/ minutes mein convert karna.
+
+Nayi CSV file likhna
+FileName, StartTime, EndTime, AHT columns ke saath ek nayi CSV file banani.
+
+Step 4: Sample commands to create folders (Linux/Mac/WSL)
+mkdir -p project-folder/input
+mkdir -p project-folder/output
+mkdir -p project-folder/scripts
+Step 5: Simple flow
+Copy your CSV to project-folder/input/InspiraFinancialTrust-metadata.csv
+
+Write script in project-folder/scripts/process_aht.py
+
+Run script, output aayega project-folder/output/aht_results.csv
+
+Kya ye flow samajh aaya?
+Agar chaho toh main ek simple Python script bhi likh ke de sakta hoon jo ye pura kaam kare.
+
+Kya karna hai?
+
+You said:
+yes
+ChatGPT said:
+Perfect! Chalo ab ek full Python script banaate hain jo:
+
+Input CSV padhe
+
+startTime aur endTime ko regex se extract kare
+
+AHT (Average Hold Time) calculate kare
+
+Output ek nayi CSV file mein likhe
+
+✅ Folder Structure (recap)
+Make sure your folder structure is like:
+
+project-folder/
+├── input/
+│   └── InspiraFinancialTrust-metadata.csv
+├── output/
+│   └── (will contain aht_results.csv)
+└── scripts/
+    └── process_aht.py
+🐍 Python Script: process_aht.py
+import csv
+import re
+from datetime import datetime
+import os
+
+# File paths
+input_file = '../input/InspiraFinancialTrust-metadata.csv'
+output_file = '../output/aht_results.csv'
+
+# Regex patterns
+start_time_pattern = r'startTime:"([^"]+)"'
+end_time_pattern = r'endTime:"([^"]+)"'
+
+# Output data list
+output_data = []
+
+# Read input CSV
+with open(input_file, 'r', encoding='utf-8') as csvfile:
+    reader = csv.reader(csvfile)
+    for row in reader:
+        row_str = ','.join(row)  # join row to make single string
+
+        # Extract using regex
+        start_match = re.search(start_time_pattern, row_str)
+        end_match = re.search(end_time_pattern, row_str)
+
+        if start_match and end_match:
+            start_str = start_match.group(1)
+            end_str = end_match.group(1)
+
+            try:
+                # Convert to datetime
+                start_time = datetime.fromisoformat(start_str.replace('Z', '+00:00'))
+                end_time = datetime.fromisoformat(end_str.replace('Z', '+00:00'))
+
+                # Calculate AHT
+                aht_seconds = (end_time - start_time).total_seconds()
+
+                # File name (try to extract from known column or fallback)
+                file_name = row[2] if len(row) > 2 else "Unknown"
+
+                # Save to output data
+                output_data.append([file_name, start_time.isoformat(), end_time.isoformat(), round(aht_seconds, 2)])
+            except Exception as e:
+                print("Error parsing time:", e)
+        else:
+            print("startTime or endTime not found in row.")
+
+# Write to output CSV
+with open(output_file, 'w', newline='', encoding='utf-8') as outfile:
+    writer = csv.writer(outfile)
+    writer.writerow(['FileName', 'StartTime', 'EndTime', 'AHT (seconds)'])  # Header
+    writer.writerows(output_data)
+
+print(f"✅ Done! Extracted AHT data saved to {output_file}")
+🚀 How to run this:
+Open terminal or command prompt.
+
+Navigate to project-folder/scripts/
+
+Run:
+
+python process_aht.py
+Output file will be saved at: project-folder/output/aht_results.csv
+
+📌 Example output CSV:
+FileName	StartTime	EndTime	AHT (seconds)
+2025-07-28...acd98fdc-63f0-...ab6db99e79a4.mp4	2025-07-28T23:59:02.205Z	2025-07-29T00:00:24.050Z	81.84
+Need Help?
+Let me know if:
+
+Folder path is different
+
+Data is in different format
+
+You want output in minutes/hours
+
+Ready to go?
+
+You said:
+script run karne se pehle folder to  banawado jisme jisme store hoga pehle please
+ChatGPT said:
+Bilkul! Pehle folder structure bana lete hain jaise ki discussed kiya tha. Aap yeh command terminal/command prompt me chalao. (Assuming you're inside your project-folder or want to create one.)
+
+🛠️ Step-by-step: Folder Structure Create Karne Ke Commands
+🖥️ On Windows CMD or PowerShell:
+mkdir project-folder
+cd project-folder
+mkdir input
+mkdir output
+mkdir scripts
+🐧 On Linux/macOS/WSL:
+mkdir -p project-folder/input
+mkdir -p project-folder/output
+mkdir -p project-folder/scripts
+cd project-folder
+✅ Folder Structure After Running:
+project-folder/
+├── input/      # <- CSV file yaha daalo
+├── output/     # <- Script yaha naya CSV banayega
+└── scripts/    # <- Script yaha save hoga
+📥 Next Step:
+Copy your file InspiraFinancialTrust-metadata.csv into the input folder.
+
+Paste the process_aht.py Python script in the scripts folder (as shared above).
+
+Run the script.
+
+Ready? ✅
+Batao agar folder banane mein koi dikkat aaye. I can help troubleshoot.
+
+You said:
+Uploaded image
+ ye araha hai ab ye to batao ki isme vo csv wali file to kaise dale
+ChatGPT said:
+Perfect! Tumhare folder structure sahi ban gaya hai — good job 👏
+
+📥 Now: How to add the CSV file to input/ folder
+You need to copy your CSV file (like InspiraFinancialTrust-metadata.csv) into the project-folder/input directory. Here's how you can do it, depending on where your CSV file currently is:
+
+🧠 Option 1: If you already have the CSV on your system
+🖥️ On Linux/macOS/WSL:
+cp /path/to/your/InspiraFinancialTrust-metadata.csv ~/.local/project-folder/input/
+🪟 On Windows (PowerShell):
+Copy-Item "C:\Path\To\InspiraFinancialTrust-metadata.csv" "$env:USERPROFILE\.local\project-folder\input\"
+🔁 Replace /path/to/your/ or C:\Path\To\ with the actual path where your CSV file is currently saved.
+
+🧠 Option 2: If you're using VS Code, here's how:
+Go to Explorer in VS Code (left sidebar).
+
+Navigate into project-folder/input/
+
+Drag and drop your CSV file (from your desktop or downloads) into this input folder.
+
+That’s it. File upload ho jayegi ✅
+
+✅ Verify
+Once copied, you can confirm with:
+
+ls input
+You should see:
+
+InspiraFinancialTrust-metadata.csv
+
+
+
+****************************************************************************************************************
+
+
+Tumhe apni file ka exact path remote server pe pata karna hoga jahan file hai.
+
+Yeh kaise pata karoge?
+
+Remote terminal mein yeh command chalao jahan tumhe lagta hai file hai, jaise:
+
+find ~ -name "InspiraFinancialTrust-metadata.csv"
+
+
+Ya agar file ka naam thoda alag ho to ls command se us folder ko check karo, jahan ho sakta hai file ho, jaise:
+
+ls ~/Downloads/
+
+
+Ya
+
+ls ~/
+
+Jab tumhe file ka correct path mil jaye, tab us path ko mv command me use karo:
+mv /correct/path/InspiraFinancialTrust-metadata.csv ~/.local/project-folder/input/
+
+Agar abhi bhi remote server pe file nahi hai:
+
+Tumhari file local Windows machine me hai, to pehle use SCP ya drag-drop karke remote server ke input folder me bhejna hoga (jaise maine pehle bataya).
+
+Agar tum chaho to batao, main SCP command fir se likh deta hoon jo Windows se remote server pe file bhejne ke liye hai.
+
+**********************************************************************************************************
+
+
+/home/CORP/katyayani264096/.local/project-folder/InspiraFinancialTrust-metadata.csv
+
+**********************************************************************************************
+
+Great! Tumhari file ka exact path mil gaya hai:
+
+/home/CORP/katyayani264096/.local/project-folder/InspiraFinancialTrust-metadata.csv
+
+Ab ise apne input folder mein move karne ke liye ye command chalao:
+
+mv /home/CORP/katyayani264096/.local/project-folder/InspiraFinancialTrust-metadata.csv ~/.local/project-folder/input/
+
+
+Iske baad check karne ke liye:
+
+ls ~/.local/project-folder/input/
+
+***********************************************************************************
+
+
+
+Agar abhi tak nahi kiya, to process_aht.py naam se ek file banao scripts folder mein, aur niche wala code usme paste karo:
+
+import csv
+import re
+from datetime import datetime
+
+input_file = '../input/InspiraFinancialTrust-metadata.csv'
+output_file = '../output/aht_results.csv'
+
+start_time_pattern = r'startTime:"([^"]+)"'
+end_time_pattern = r'endTime:"([^"]+)"'
+
+output_data = []
+
+with open(input_file, 'r', encoding='utf-8') as csvfile:
+    reader = csv.reader(csvfile)
+    for row in reader:
+        row_str = ','.join(row)
+        start_match = re.search(start_time_pattern, row_str)
+        end_match = re.search(end_time_pattern, row_str)
+
+        if start_match and end_match:
+            start_str = start_match.group(1)
+            end_str = end_match.group(1)
+
+            try:
+                start_time = datetime.fromisoformat(start_str.replace('Z', '+00:00'))
+                end_time = datetime.fromisoformat(end_str.replace('Z', '+00:00'))
+
+                aht_seconds = (end_time - start_time).total_seconds()
+                file_name = row[2] if len(row) > 2 else "Unknown"
+
+                output_data.append([file_name, start_time.isoformat(), end_time.isoformat(), round(aht_seconds, 2)])
+            except Exception as e:
+                print("Error parsing time:", e)
+        else:
+            print("startTime or endTime not found in row.")
+
+with open(output_file, 'w', newline='', encoding='utf-8') as outfile:
+    writer = csv.writer(outfile)
+    writer.writerow(['FileName', 'StartTime', 'EndTime', 'AHT (seconds)'])
+    writer.writerows(output_data)
+
+print(f"✅ Done! Output saved to {output_file}")
+
+Step 2: Terminal mein scripts folder mein jao aur script run karo
+cd ~/.local/project-folder/scripts/
+python3 process_aht.py
+
+Step 3: Output check karo
+
+Script ke run hone ke baad, output folder mein aht_results.csv file banegi.
+
+ls ~/.local/project-folder/output/
+
+
+Aur us file ko dekhne ke liye:
+
+cat ~/.local/project-folder/output/aht_results.csv
+
+
+Koi error aaye ya aur help chahiye to batao! Ready ho?
+
+You said:
+pehle iske file bhi folder wagera banwado please terminal pe command likh karke linus ke liye jaise uparwale ke liye bataye the
+ChatGPT said:
+
+Bilkul! Tumhare liye Linux terminal me ek hi command likh deta hoon jo folder structure banayega agar abhi tak nahi bana hai:
+
+mkdir -p ~/.local/project-folder/{input,output,scripts}
+
+Explanation:
+
+mkdir -p = parent folders bhi banayega agar nahi hain
+
+{input,output,scripts} = teen folders ek saath ban jayenge project-folder ke andar
+
+Run karo terminal me:
+mkdir -p ~/.local/project-folder/{input,output,scripts}
+
+
+Iske baad confirm karne ke liye:
+
+ls ~/.local/project-folder/
+
+
+Output me tumhe yeh teen folders dikhne chahiye: input output scripts
+
+Kuch aur chahiye toh batao!
+
+You said:
+Step 1: Script ko scripts folder mein save karo
+
+Agar abhi tak nahi kiya, to process_aht.py naam se ek file banao scripts folder mein, aur niche wala code usme paste karo , is folder me file banawado command ke through please
+ChatGPT said:
+
+Sure! Tumhare remote Linux terminal me yeh command run karo jo scripts folder ke andar process_aht.py naam se Python script file bana dega aur usme required code likh dega:
+
+cat > ~/.local/project-folder/scripts/process_aht.py << 'EOF'
+import csv
+import re
+from datetime import datetime
+
+input_file = '../input/InspiraFinancialTrust-metadata.csv'
+output_file = '../output/aht_results.csv'
+
+start_time_pattern = r'startTime:"([^"]+)"'
+end_time_pattern = r'endTime:"([^"]+)"'
+
+output_data = []
+
+with open(input_file, 'r', encoding='utf-8') as csvfile:
+    reader = csv.reader(csvfile)
+    for row in reader:
+        row_str = ','.join(row)
+        start_match = re.search(start_time_pattern, row_str)
+        end_match = re.search(end_time_pattern, row_str)
+
+        if start_match and end_match:
+            start_str = start_match.group(1)
+            end_str = end_match.group(1)
+
+            try:
+                start_time = datetime.fromisoformat(start_str.replace('Z', '+00:00'))
+                end_time = datetime.fromisoformat(end_str.replace('Z', '+00:00'))
+
+                aht_seconds = (end_time - start_time).total_seconds()
+                file_name = row[2] if len(row) > 2 else "Unknown"
+
+                output_data.append([file_name, start_time.isoformat(), end_time.isoformat(), round(aht_seconds, 2)])
+            except Exception as e:
+                print("Error parsing time:", e)
+        else:
+            print("startTime or endTime not found in row.")
+
+with open(output_file, 'w', newline='', encoding='utf-8') as outfile:
+    writer = csv.writer(outfile)
+    writer.writerow(['FileName', 'StartTime', 'EndTime', 'AHT (seconds)'])
+    writer.writerows(output_data)
+
+print(f"✅ Done! Output saved to {output_file}")
+EOF
+
+Explanation:
+
+cat > filename << 'EOF' ... EOF syntax se multi-line content ek file me save kar sakte hain.
+
+Yeh command turant script create kar dega scripts folder me.
+
+Iske baad script ko run karne ke liye:
+cd ~/.local/project-folder/scripts/
+python3 process_aht.py
+
+
+Batao agar step-by-step chahiye ho!
+
+You said:
+alag se likh ke do command 
+ChatGPT said:
+
+Bilkul! Yahan hai alag-alag commands, step-by-step:
+
+1️⃣ Scripts folder me file banane ke liye:
+cd ~/.local/project-folder/scripts/
+
+2️⃣ process_aht.py file create karne ke liye (nano editor use karte hain):
+nano process_aht.py
+
+3️⃣ Nano editor me ye poora code paste karo:
+import csv
+import re
+from datetime import datetime
+
+input_file = '../input/InspiraFinancialTrust-metadata.csv'
+output_file = '../output/aht_results.csv'
+
+start_time_pattern = r'startTime:"([^"]+)"'
+end_time_pattern = r'endTime:"([^"]+)"'
+
+output_data = []
+
+with open(input_file, 'r', encoding='utf-8') as csvfile:
+    reader = csv.reader(csvfile)
+    for row in reader:
+        row_str = ','.join(row)
+        start_match = re.search(start_time_pattern, row_str)
+        end_match = re.search(end_time_pattern, row_str)
+
+        if start_match and end_match:
+            start_str = start_match.group(1)
+            end_str = end_match.group(1)
+
+            try:
+                start_time = datetime.fromisoformat(start_str.replace('Z', '+00:00'))
+                end_time = datetime.fromisoformat(end_str.replace('Z', '+00:00'))
+
+                aht_seconds = (end_time - start_time).total_seconds()
+                file_name = row[2] if len(row) > 2 else "Unknown"
+
+                output_data.append([file_name, start_time.isoformat(), end_time.isoformat(), round(aht_seconds, 2)])
+            except Exception as e:
+                print("Error parsing time:", e)
+        else:
+            print("startTime or endTime not found in row.")
+
+with open(output_file, 'w', newline='', encoding='utf-8') as outfile:
+    writer = csv.writer(outfile)
+    writer.writerow(['FileName', 'StartTime', 'EndTime', 'AHT (seconds)'])
+    writer.writerows(output_data)
+
+print(f"✅ Done! Output saved to {output_file}")
+
+4️⃣ File save karne ke liye:
+
+Nano me: Ctrl + O (write out) press karo,
+
+Fir Enter press karo to confirm filename,
+
+Phir Ctrl + X se nano se bahar aa jao.
+
+Ab tum ready ho script run karne ke liye:
+
+python3 process_aht.py
+
+
+Koi dikkat aaye to batao!
+
+You said:
+dont use nano
+ChatGPT said:
+
+Got it! Nano use nahi karna hai.
+
+To seedha ek command mein file bana ke usme code likh deta hoon:
+
+cat > ~/.local/project-folder/scripts/process_aht.py << 'EOF'
+import csv
+import re
+from datetime import datetime
+
+input_file = '../input/InspiraFinancialTrust-metadata.csv'
+output_file = '../output/aht_results.csv'
+
+start_time_pattern = r'startTime:"([^"]+)"'
+end_time_pattern = r'endTime:"([^"]+)"'
+
+output_data = []
+
+with open(input_file, 'r', encoding='utf-8') as csvfile:
+    reader = csv.reader(csvfile)
+    for row in reader:
+        row_str = ','.join(row)
+        start_match = re.search(start_time_pattern, row_str)
+        end_match = re.search(end_time_pattern, row_str)
+
+        if start_match and end_match:
+            start_str = start_match.group(1)
+            end_str = end_match.group(1)
+
+            try:
+                start_time = datetime.fromisoformat(start_str.replace('Z', '+00:00'))
+                end_time = datetime.fromisoformat(end_str.replace('Z', '+00:00'))
+
+                aht_seconds = (end_time - start_time).total_seconds()
+                file_name = row[2] if len(row) > 2 else "Unknown"
+
+                output_data.append([file_name, start_time.isoformat(), end_time.isoformat(), round(aht_seconds, 2)])
+            except Exception as e:
+                print("Error parsing time:", e)
+        else:
+            print("startTime or endTime not found in row.")
+
+with open(output_file, 'w', newline='', encoding='utf-8') as outfile:
+    writer = csv.writer(outfile)
+    writer.writerow(['FileName', 'StartTime', 'EndTime', 'AHT (seconds)'])
+    writer.writerows(output_data)
+
+print(f"✅ Done! Output saved to {output_file}")
+EOF
+
+
+Is command ko terminal pe paste karo, ye turant file bana ke code likh dega.
+
+Phir run karne ke liye:
+
+python3 ~/.local/project-folder/scripts/process_aht.py
+
+
+Batao agar kuch aur chahiye!
+
+You said:
+katyayani264096@az03-b26-daiml5:~/.local$ python3 ~/.local/project-folder/scripts/process_aht.py
+python3: can't open file '/home/CORP/katyayani264096/.local/project-folder/scripts/process_aht.py': [Errno 2] No such file or directory
+katyayani264096@az03-b26-daiml5:~/.local$ 
+ChatGPT said:
+
+Ye error bata raha hai ki file process_aht.py wahan exist nahi karti.
+
+Iska matlab ya to file banate waqt kuch galat ho gaya, ya folder path sahi nahi hai.
+
+Step-by-step check karo:
+
+Folder existence check karo:
+
+ls ~/.local/project-folder/scripts/
+
+
+Kya ye command tumhe koi file ya folder dikhata hai?
+
+Agar scripts folder nahi hai, to pehle banalo:
+
+mkdir -p ~/.local/project-folder/scripts
+
+
+Phir dobara file create karne ki koshish karo:
+
+cat > ~/.local/project-folder/scripts/process_aht.py << 'EOF'
+import csv
+import re
+from datetime import datetime
+
+input_file = '../input/InspiraFinancialTrust-metadata.csv'
+output_file = '../output/aht_results.csv'
+
+start_time_pattern = r'startTime:"([^"]+)"'
+end_time_pattern = r'endTime:"([^"]+)"'
+
+output_data = []
+
+with open(input_file, 'r', encoding='utf-8') as csvfile:
+    reader = csv.reader(csvfile)
+    for row in reader:
+        row_str = ','.join(row)
+        start_match = re.search(start_time_pattern, row_str)
+        end_match = re.search(end_time_pattern, row_str)
+
+        if start_match and end_match:
+            start_str = start_match.group(1)
+            end_str = end_match.group(1)
+
+            try:
+                start_time = datetime.fromisoformat(start_str.replace('Z', '+00:00'))
+                end_time = datetime.fromisoformat(end_str.replace('Z', '+00:00'))
+
+                aht_seconds = (end_time - start_time).total_seconds()
+                file_name = row[2] if len(row) > 2 else "Unknown"
+
+                output_data.append([file_name, start_time.isoformat(), end_time.isoformat(), round(aht_seconds, 2)])
+            except Exception as e:
+                print("Error parsing time:", e)
+        else:
+            print("startTime or endTime not found in row.")
+
+with open(output_file, 'w', newline='', encoding='utf-8') as outfile:
+    writer = csv.writer(outfile)
+    writer.writerow(['FileName', 'StartTime', 'EndTime', 'AHT (seconds)'])
+    writer.writerows(output_data)
+
+print(f"✅ Done! Output saved to {output_file}")
+EOF
+
+
+Fir file exist karne ka dobara check karo:
+
+ls ~/.local/project-folder/scripts/
+
+
+Agar file dikh rahi hai to run karo:
+
+python3 ~/.local/project-folder/scripts/process_aht.py
+
+
+
+*****************************************************************
+
+PROMPT
+
+thodi si specification add kardo , tumhe mai ye batadu ki jo csv fle hai usme row number 19 se hi shuru karo 1 se18th tak ki rows ko skip kardo sirf 19 se including 19 ko lekar sari rows jitni bhi hai una aht nikaldo using regex tool in python with specification ye hai ki separted by commas aur define kardo patter and match the pattern from csv file, note one row can have multiple file names aswell, so please use a regex fucntion to rewrite the given script , give all commands to update the script , for example4595259,3ac6197a-1e66-4036-907e-2f30997096c1,2025-07-28-23-59-02_679169126381_VOICE_acd98fdc-63f0-4904-953e-ab6db99e79a4.mp4,71c608cd-6a67-4bba-a6f0-988bb2794281,Mon Jul 28 2025 18:00:27 GMT-0600 (Mountain Daylight Time),,,2,4595259/71c608cd-6a67-4bba-a6f0-988bb2794281_Standard,16432357,2025-07-28T18:00:27-06:00,450.9KB,6.79169E+11,,,,20ebba66-f300-4692-9d70-daa117cb7834,,,,461721,,," ""BusinessUnit"":4595259","PublicId:""3ac6197a-1e66-4036-907e-2f30997096c1""","PrivateId:""71c608cd-6a67-4bba-a6f0-988bb2794281""",FileType:1,"Metadata:""tenantId"":""11e9c315-53eb-4d50-80f4-0242ac110004""","recordingId:""9b3f3469-e2ed-48f4-9c28-41a34a2a18fd""","mediaType:""VOICE""","summation:""STEREO""","businessUnit:""4595259""","participants:[""ContactNo"":""679169140956""","Agent:""19643654""","Skill:""16432357""","UserId:""11ed60ff-accc-98d0-98c8-0242ac110002""","ParticipantType:""AGENT""","Team:""20ebba66-f300-4692-9d70-daa117cb7834""","ContactNo:""679169130874""","Agent:""38845605""","Skill:""20712987""","UserId:""11ef9e2f-31f8-9180-b841-0242ac110002""","ParticipantType:""AGENT""","Team:""a0a03a70-2af6-4e0d-965d-76bd82f2256f""]","metadataExtensions:""tenantName"":""millennium_trust_company_llc32282498""","acdContactId:""679169126381""","participants:""[\""ParticipantType\"":\""AGENT\""","\""ContactNo\"":\""679169140956\""","\""UserId\"":\""11ed60ff-accc-98d0-98c8-0242ac110002\""","\""Agent\"":\""19643654\""","\""Team\"":\""20ebba66-f300-4692-9d70-daa117cb7834\""","\""Skill\"":\""16432357\""","\""ParticipantType\"":\""AGENT\""","\""ContactNo\"":\""679169130874\""","\""UserId\"":\""11ef9e2f-31f8-9180-b841-0242ac110002\""","\""Agent\"":\""38845605\""","\""Team\"":\""a0a03a70-2af6-4e0d-965d-76bd82f2256f\""","\""Skill\"":\""20712987\""]""","Application:""MCR""","SegmentId:""acd98fdc-63f0-4904-953e-ab6db99e79a4""","ContactId:""679169126381""","MCRContactId:""01c97b8e-7799-4f7a-a892-5e0b944725fa""","FileName:""2025-07-28-23-59-02_679169126381_VOICE_acd98fdc-63f0-4904-953e-ab6db99e79a4.mp4""","startTime:""2025-07-28T23:59:02.205Z""","endTime:""2025-07-29T00:00:24.05Z""","codec:""AAC""","contactNo:""679169140956""","type:""segment""","Bucket:""ic-storageservices-files-ao""",ExternalBucket:0,"EncrypType:""default""","Region:""us-west-2""",CreationDate:1753747227398,"Path:""4595259/71c608cd-6a67-4bba-a6f0-988bb2794281_Standard""",State:2,"ttlIndex:""ttl-v2""",FileSize:461721,,,,,,,,,,,,,,,,,, given in this format BusNo,publicID,FileNameNoPath,PrivateID,CreationDate,RestoreDate,Invalid Date,State,Path,Skill,CreationShortDate,Friendly File size,ContactId,FileType,Campaign,Agent,Team,Dnis,Ani,ContactStartDate,FileSize (bytes),errorMessage, ReturnToLongTerm, metaDataLake , so kindly find the filename and start time and end time and calculate the aht for each after the 18th row only
+
+
+******************************************************************************************
+
+Got it! You want to:
+
+Skip first 18 rows of the CSV.
+
+For each subsequent row, extract multiple FileNames, startTime, and endTime values using regex.
+
+Calculate AHT = (endTime - startTime) in seconds.
+
+The CSV is comma-separated but one row can have multiple file names.
+
+The row format example is something like:
+
+4595259,3ac6197a-1e66-4036-907e-2f30997096c1,2025-07-28-23-59-02_679169126381_VOICE_acd98fdc-63f0-4904-953e-ab6db99e79a4.mp4,71c608cd-6a67-4bba-a6f0-988bb2794281,Mon Jul 28 2025 18:00:27 GMT-0600 (Mountain Daylight Time),,,2,4595259/71c608cd-6a67-4bba-a6f0-988bb2794281_Standard,16432357,2025-07-28T18:00:27-06:00,450.9KB,6.79169E+11,,,,20ebba66-f300-4692-9d70-daa117cb7834,,,,461721,,," ""BusinessUnit"":4595259","PublicId:""3ac6197a-1e66-4036-907e-2f30997096c1""","PrivateId:""71c608cd-6a67-4bba-a6f0-988bb2794281""",FileType:1,"Metadata:""tenantId"":""11e9c315-53eb-4d50-80f4-0242ac110004""","recordingId:""9b3f3469-e2ed-48f4-9c28-41a34a2a18fd""","mediaType:""VOICE""","summation:""STEREO""","businessUnit:""4595259""","participants:[""ContactNo"":""679169140956""","Agent:""19643654""","Skill:""16432357""","UserId:""11ed60ff-accc-98d0-98c8-0242ac110002""","ParticipantType:""AGENT""","Team:""20ebba66-f300-4692-9d70-daa117cb7834""","ContactNo:""679169130874""","Agent:""38845605""","Skill:""20712987""","UserId:""11ef9e2f-31f8-9180-b841-0242ac110002""","ParticipantType:""AGENT""","Team:""a0a03a70-2af6-4e0d-965d-76bd82f2256f""]","metadataExtensions:""tenantName"":""millennium_trust_company_llc32282498""","acdContactId:""679169126381""","participants:""[\""ParticipantType\"":\""AGENT\""","\""ContactNo\"":\""679169140956\""","\""UserId\"":\""11ed60ff-accc-98d0-98c8-0242ac110002\""","\""Agent\"":\""19643654\""","\""Team\"":\""20ebba66-f300-4692-9d70-daa117cb7834\""","\""Skill\"":\""16432357\""","\""ParticipantType\"":\""AGENT\""","\""ContactNo\"":\""679169130874\""","\""UserId\"":\""11ef9e2f-31f8-9180-b841-0242ac110002\""","\""Agent\"":\""38845605\""","\""Team\"":\""a0a03a70-2af6-4e0d-965d-76bd82f2256f\""","\""Skill\"":\""20712987\""]""","Application:""MCR""","SegmentId:""acd98fdc-63f0-4904-953e-ab6db99e79a4""","ContactId:""679169126381""","MCRContactId:""01c97b8e-7799-4f7a-a892-5e0b944725fa""","FileName:""2025-07-28-23-59-02_679169126381_VOICE_acd98fdc-63f0-4904-953e-ab6db99e79a4.mp4""","startTime:""2025-07-28T23:59:02.205Z""","endTime:""2025-07-29T00:00:24.05Z""
+
+Updated Script with regex & skipping rows
+cat > ~/.local/project-folder/scripts/process_aht.py << 'EOF'
+import csv
+import re
+from datetime import datetime
+
+input_file = '/home/CORP/katyayani264096/.local/project-folder/input/InspiraFinancialTrust-metadata.csv'
+output_file = '/home/CORP/katyayani264096/.local/project-folder/output/aht_results.csv'
+
+# Patterns to extract filenames, startTime, and endTime from row string
+filename_pattern = re.compile(r'([^,]+\.mp4)')  # Adjust if filenames extensions differ
+start_time_pattern = re.compile(r'startTime:"([^"]+)"')
+end_time_pattern = re.compile(r'endTime:"([^"]+)"')
+
+output_data = []
+
+with open(input_file, 'r', encoding='utf-8') as csvfile:
+    reader = csv.reader(csvfile)
+    
+    # Skip first 18 rows
+    for _ in range(18):
+        next(reader)
+
+    for row_number, row in enumerate(reader, start=19):
+        row_str = ','.join(row)
+        
+        # Extract all filenames from row string
+        filenames = filename_pattern.findall(row_str)
+        
+        # Extract all start times and end times from row string
+        start_times = start_time_pattern.findall(row_str)
+        end_times = end_time_pattern.findall(row_str)
+        
+        if not filenames:
+            print(f"Row {row_number}: No filenames found.")
+            continue
+        if not start_times or not end_times:
+            print(f"Row {row_number}: startTime or endTime missing.")
+            continue
+        
+        # Handle multiple start and end times, match pairs by index
+        pairs_count = min(len(start_times), len(end_times))
+        
+        for i in range(pairs_count):
+            try:
+                start_time = datetime.fromisoformat(start_times[i].replace('Z', '+00:00'))
+                end_time = datetime.fromisoformat(end_times[i].replace('Z', '+00:00'))
+                aht_seconds = (end_time - start_time).total_seconds()
+                
+                # For filename, if multiple, try to use ith, else first
+                file_name = filenames[i] if i < len(filenames) else filenames[0]
+                
+                output_data.append([file_name, start_time.isoformat(), end_time.isoformat(), round(aht_seconds, 2)])
+            except Exception as e:
+                print(f"Row {row_number}: Error parsing times - {e}")
+
+with open(output_file, 'w', newline='', encoding='utf-8') as outfile:
+    writer = csv.writer(outfile)
+    writer.writerow(['FileName', 'StartTime', 'EndTime', 'AHT (seconds)'])
+    writer.writerows(output_data)
+
+print(f"✅ Done! Output saved to {output_file}")
+EOF
+
+Run the script
+python3 ~/.local/project-folder/scripts/process_aht.py
+
+Explanation:
+
+Script skips first 18 rows.
+
+Jo row string hai, usme regex se all filenames .mp4 nikalta hai.
+
+StartTime aur endTime bhi regex se sab nikalta hai.
+
+Multiple start-end times ke pairs ko handle karta hai.
+
+Har pair ka AHT calculate karta hai.
+
+Output CSV me likhta hai: FileName, StartTime, EndTime, AHT (seconds).
+
+
+
+
+
+
+***************************************************************************************************************
+
+AHT (Average Handle Time) is typically calculated in call or contact center data processing, and what the formula generally looks like based on the info you provided:
+
+What is AHT?
+
+AHT measures the average duration spent handling a contact, usually:
+
+AHT
+=
+End Time
+−
+Start Time
+AHT=End Time−Start Time
+In your case:
+
+From each row in the CSV (starting from row 19), you extract:
+
+Start Time (e.g., "startTime":"2025-07-28T23:59:02.205Z")
+
+End Time (e.g., "endTime":"2025-07-29T00:00:24.05Z")
+
+Then you convert these ISO8601 timestamps into Python datetime objects.
+
+Then subtract start time from end time to get a timedelta.
+
+Convert this timedelta to total seconds:
+
+aht_seconds = (end_time - start_time).total_seconds()
+
+
+This aht_seconds is your Average Handle Time for that contact/row.
+
+Summary:
+
+Formula:
+
+AHT (seconds)
+=
+Timestamp
+end
+−
+Timestamp
+start
+AHT (seconds)=Timestamp
+end
+	​
+
+−Timestamp
+start
+	​
+
+	​
+Bilkul! Yahan tumhare liye 10 points me simple hinglish summary:
+
+CSV file ko dekha — file me kai rows thi, lekin humne pehle 18 rows skip karke 19th row se processing start ki.
+
+Rows ko read kiya Python ke csv module se, taaki har row ko alag-alag samjha ja sake.
+
+Har row me se file names aur timestamps dhundhe — row ke andar multiple filenames ho sakte the, isliye regex use kiya pattern match karne ke liye.
+
+Regex pattern define kiya jo filenames aur timestamps (start time, end time) ko accurately extract kare.
+
+Start time aur end time ko parse kiya Python ke datetime module se, taaki unhe datetime objects me convert kiya ja sake.
+
+AHT calculate kiya — end time me se start time minus karke total seconds nikale.
+
+Har row ka AHT store kiya ek list me, taaki baad me aggregate ya analysis kar sakein.
+
+Output CSV me likha jisme har row ke saath uska calculated AHT bhi ho.
+
+File save kar di output folder me jiska naam output tha.
+
+Final result ye tha ki tumhe har contact ke liye accurate AHT mil gaya, start time aur end time ke basis pe, aur wo ready hai analysis ke liye
+
+
+
+
+
+
+
+
+
+
+
+
